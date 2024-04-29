@@ -6,7 +6,7 @@ import { LoginSchema } from "@/schemas/auth";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 
-export default async function login(values: z.infer<typeof LoginSchema>) {
+export async function login(values: z.infer<typeof LoginSchema>) {
   const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
@@ -28,7 +28,16 @@ export default async function login(values: z.infer<typeof LoginSchema>) {
         default:
           return { error: "Something went wrong!" };
       }
+    } else {
     }
     throw error;
+  }
+}
+
+export async function googleLogin() {
+  try {
+    await signIn("google");
+  } catch (error) {
+    console.log("stupid error", error);
   }
 }

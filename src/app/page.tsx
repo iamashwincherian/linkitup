@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { auth, signOut } from "../auth";
+import { auth, signOut } from "@/auth";
+import { LOGIN_PATH } from "@/routes";
 
 export default async function Home() {
   const session = await auth();
@@ -11,7 +12,7 @@ export default async function Home() {
       <form
         action={async () => {
           "use server";
-          await signOut({ redirectTo: "/auth/login" });
+          await signOut({ redirectTo: LOGIN_PATH });
         }}
       >
         <Button className="mt-2">Logout</Button>

@@ -1,5 +1,3 @@
-import { Card } from "@/components/ui/card";
-
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -7,7 +5,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <main>
-      <div className="flex justify-center items-center h-full min-h-screen">
+      <div className="flex justify-center items-center h-full min-h-screen bg-orange-50">
         {children}
       </div>
     </main>

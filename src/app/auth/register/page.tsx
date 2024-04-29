@@ -27,11 +27,14 @@ import { Icons } from "@/components/icons";
 import { RegisterSchema } from "@/schemas/auth";
 import FormResponseMessage from "@/components/form/form-message";
 import register from "@/actions/auth/register";
+import { useRouter } from "next/navigation";
+import { LOGIN_PATH } from "@/routes";
 
 export default function RegisterPage() {
   const [isPending, startTransaction] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -47,6 +50,9 @@ export default function RegisterPage() {
       register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+        if (data.success) {
+          router.push(LOGIN_PATH);
+        }
       });
     });
   };
@@ -107,6 +113,7 @@ export default function RegisterPage() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      type="password"
                       placeholder="Enter password"
                       disabled={isPending}
                       {...field}
@@ -129,7 +136,7 @@ export default function RegisterPage() {
         </Form>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
-          <Link href="/auth/login" className="underline">
+          <Link href={LOGIN_PATH} className="underline">
             Login
           </Link>
         </div>

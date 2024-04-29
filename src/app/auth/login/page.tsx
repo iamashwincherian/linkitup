@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { LoginSchema } from "@/schemas/auth";
 import FormResponseMessage from "@/components/form/form-message";
-import login from "@/actions/auth/login";
+import { login, googleLogin } from "@/actions/auth/login";
 
 export default function LoginPage() {
   const [isPending, startTransaction] = useTransition();
@@ -45,6 +45,12 @@ export default function LoginPage() {
       login(values).then((data) => {
         setError(data?.error);
       });
+    });
+  };
+
+  const handleGoogleSignIn = () => {
+    startTransaction(() => {
+      googleLogin();
     });
   };
 
@@ -87,6 +93,7 @@ export default function LoginPage() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      type="password"
                       placeholder="Enter password"
                       disabled={isPending}
                       {...field}
@@ -100,7 +107,12 @@ export default function LoginPage() {
             <Button className="mt-2 w-full" type="submit">
               Login
             </Button>
-            <Button type="button" variant="outline" disabled={isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isPending}
+              onClick={handleGoogleSignIn}
+            >
               <Icons.google className="mr-2 h-4 w-4" />
               Login with Google
             </Button>
