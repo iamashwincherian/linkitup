@@ -1,2 +1,2 @@
-import { handlers } from "@/auth";
-export const { GET, POST } = handlers;
+import handler from "@/app/api/auth/[...nextauth]/auth-options";
+export { handler as GET, handler as POST };
